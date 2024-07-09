@@ -1,0 +1,17 @@
+# Ignore the img directory
+img/
+
+# Ignore the data directory
+data/TestSetA
+data/TrainSet
+data/ViT-B-32.pkl
+baseline_copy/ViT-B-32.pkl
+runs/
+__pycache__/
+model_checkpoints/
+data/result.txt
+data/result.zip
+model_checkpoint/
+data/
+.ipynb_checkpoints/
+result/
