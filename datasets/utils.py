@@ -75,7 +75,7 @@ class Datum:
 
     def __init__(self, impath='', label=0, domain=-1, classname=''):
         assert isinstance(impath, str)
-        assert isinstance(label, int)
+        # assert isinstance(label, int)
         assert isinstance(domain, int)
         assert isinstance(classname, str)
 
@@ -156,7 +156,7 @@ class DatasetBase:
         label_set = set()
         for item in data_source:
             label_set.add(item.label)
-        return max(label_set) + 1
+        return len(label_set)
 
     def get_lab2cname(self, data_source):
         """Get a label-to-classname mapping (dict).
