@@ -46,6 +46,20 @@ def gpt_clip_classifier(classnames, clip_model, template):
             # Tokenize the prompts
             classname = classname.replace('_', ' ')
             texts = [t.format(classname) for t in template]
+            if "/" in classname:
+                speci,name=classname.split("/")
+                # 'Animal/Bear'
+                if speci=="Animal":
+                    texts=['a photo of a '+name+', a type of animal.']
+                elif speci=="Caltech-101":
+                    texts=['a photo of a '+name+"."]
+                elif speci=="Food-101":
+                    texts=['a photo of a '+name+', a type of food.']
+                elif speci=="Thu-dog":
+                    texts=['a photo of a '+name+', a type of dog.']
+                elif speci=="Thu-dog":
+                    texts=['a photo of a '+name+', a type of dog.']
+            # print(texts)
             texts = clip.tokenize(texts).cuda()
             # prompt ensemble for ImageNet
             class_embeddings = clip_model.encode_text(texts)

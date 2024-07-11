@@ -6,7 +6,7 @@ from collections import defaultdict
 import torchvision.transforms as transforms
 
 from .utils import Datum, DatasetBase, read_json, write_json, build_data_loader,listdir_nohidden
-
+import pickle
 
 template = ['a photo of a {}.']
 
@@ -15,7 +15,8 @@ class MyDataSet(DatasetBase):
 
     dataset_dir = 'TrainSet'
 
-    def __init__(self, root, num_shots):
+    def __init__(self, root, num_shots,if_load):
+        """if_load,1是保存,2是加载,3是加载最好的"""
         self.root=root
         self.dataset_dir = os.path.join(root, self.dataset_dir)
         # self.image_dir = os.path.join(self.dataset_dir, 'images')
@@ -24,10 +25,26 @@ class MyDataSet(DatasetBase):
         class_name_dic_name=self.ret_class_name_dic(root)
 
         self.template = template
-        train, val, test=self.read_and_split_data(p_trn=0.5,p_val=0.2,class_name_dic_name=class_name_dic_name)
-        # train, val, test = self.read_split(self.split_path, self.image_dir)
-        train = self.generate_fewshot_dataset(train, num_shots=num_shots)
+        train, val, test=self.read_and_split_data(p_trn=0.5,p_val=0.01,class_name_dic_name=class_name_dic_name)
 
+        # train, val, test = self.read_split(self.split_path, self.image_dir)
+        if if_load==1:
+            dic={'train':train,'val':val,'test':test}
+            train = self.generate_fewshot_dataset(train, num_shots=num_shots)
+            with open('datasets/pic_slect', 'wb') as file:
+                pickle.dump(dic, file)
+        elif if_load==2:
+            dic={'train':train,'val':val,'test':test}
+            train = self.generate_fewshot_dataset(train, num_shots=num_shots)
+            dic={}
+            with open('datasets/pic_slect', 'wb') as file:
+                dic = pickle.load(file)
+            if if_load==3:
+                with open('datasets/pic_slect_best', 'wb') as file:
+                    dic = pickle.load(file)
+            train=dic['train']
+            val=dic['val']
+            test=dic['test']
         super().__init__(train_x=train, val=val, test=test)
     
     @staticmethod

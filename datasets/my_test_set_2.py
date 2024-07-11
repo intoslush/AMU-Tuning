@@ -73,14 +73,15 @@ class MyDataSet2(DatasetBase):
 
         def _collate(ims, y, c):
             items = []
+            # print("ims[0]:",ims[0],ims[0].split('_')[1][:-5])
             for im in ims:
                 item = Datum(
                     impath=im,
-                    label=int(im.split('_')[1][:-4]), # is already 0-based
+                    label=int(im.split('_')[1].split('.')[0]), 
                     classname=c
                 )
                 items.append(item)
-            print("ims[0]:",ims[0])
+            
             return items
 
         train, val, test = [], [], []
