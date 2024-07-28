@@ -132,7 +132,7 @@ class AMU_Model(nn.Module):
         # CLIP branch
         clip_features =self.clip_model.encode_image(tfm_clip(images))
         # AUX branch
-        aux_feature = self.aux_model(tfm_aux(images))
+        aux_feature = self.aux_model(tfm_clip(images))
         return clip_features, aux_feature
     
     def forward_adapter(self, clip_features, aux_features):
@@ -140,4 +140,5 @@ class AMU_Model(nn.Module):
         clip_logits = 100. * clip_features @ self.clip_weights
         aux_logits = self.aux_adapter(aux_features)
         aux_logits = logit_normalize(aux_logits)
+        # print("aux_logits.dtype",aux_logits.dtype,"clip_logits.dype",clip_logits.dtype)#clip 16,aux 32
         return clip_logits, aux_logits 

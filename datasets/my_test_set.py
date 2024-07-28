@@ -25,7 +25,7 @@ class MyDataSet(DatasetBase):
         class_name_dic_name=self.ret_class_name_dic(root)
 
         self.template = template
-        train, val, test=self.read_and_split_data(p_trn=0.5,p_val=0.01,class_name_dic_name=class_name_dic_name)
+        train, val, test=self.read_and_split_data(p_trn=0.5,p_val=0.1,class_name_dic_name=class_name_dic_name)
 
         # train, val, test = self.read_split(self.split_path, self.image_dir)
         if if_load==1:
